@@ -1,0 +1,48 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "This Repo includes all automated tests for swyft using cypress!",
+  "main": "index.js",
+  "scripts": {
+    "cypress": "cypress open",
+    "lint": "eslint cypress/**/*.js --color",
+    "lint:fix": "eslint cypress/**/*.js --color --fix",
+    "lint-staged": "lint-staged",
+    "commit": "git-cz",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:robustastudio/swyft-corporate-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "babel-eslint": "^10.0.2",
+    "commitizen": "^3.1.2",
+    "cypress": "^3.4.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-cypress": "^2.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "gmail-tester": "^1.1.4",
+    "husky": "^3.0.0",
+    "lint-staged": "^9.2.0",
+    "prettier": "^1.18.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
