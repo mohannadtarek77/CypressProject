@@ -1,0 +1,14 @@
+﻿Part 1:-
+Steps to run the tests:-
+1) cd to cypress folder
+2) npm run cypress
+3) execute the test cases through the UI of server of cypress
+
+Part 2:-
+Steps to get an execution report(if needed) :-
+1) cd to cypress 
+2) add this script to package.json 
+{ "scripts": { "delete:reports": "rm cypress/results/* || true", "prereport": "npm run delete:reports", "report": "cypress run" } }
+this script should also be deleted if you want to run again Part 1 
+
+3) npm run report

@@ -1,7 +1,7 @@
 import SignUp from "../Pages/SignUp.page.js";
 const register = new SignUp();
 describe("Navigates to Sign Up", function() {
-  it("Should Sign Up with full fields with random mails", function() {
+  it("Should Sign Up with full fields with several mails", function() {
     cy.fixture("SignUp.json").as("SignUp");
 
     cy.get("@SignUp").then(() => {
@@ -33,7 +33,7 @@ describe("Navigates to Sign Up", function() {
       cy.url().should("eq", this.SignUp.NavigatedUrl);
     });
   });
-  it("Should Sign Up with full fields with unique mail", function() {
+  it("Should Sign Up with full fields with unique mail and verifying the mail sent", function() {
     cy.fixture("SignUp.json").as("SignUp");
 
     cy.get("@SignUp").then(() => {
@@ -48,8 +48,12 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getField(this.SignUp.emailSelector, this.SignUp.email);
-
+      register.getEmail(
+        this.SignUp.emailSelector,
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
+      );
       register.getField(this.SignUp.passwordSelector, this.SignUp.password);
 
       register.getField(
@@ -59,6 +63,26 @@ describe("Navigates to Sign Up", function() {
       register.getSignUpButton(this.SignUp.signUpButtonSelector).click();
 
       cy.url().should("eq", this.SignUp.NavigatedUrl);
+      const recieverEmail = this.SignUp.email;
+
+      cy.task("gmail:check", {
+        from: "bookings@domain.com",
+        to: recieverEmail,
+        subject: "Signed Up successfully"
+      }).then(email => {
+        assert.isNotNull(email, `Email was found`);
+      });
+
+      cy.task("gmail:get-messages", {
+        options: {
+          from: "bookings@domain.com",
+          subject: "Signed Up successfully",
+          include_body: true
+        }
+      }).then(emails => {
+        const email_text = emails[0].body.text;
+        cy.log(email_text);
+      });
     });
   });
   it("Should not Sign Up with empty fields", function() {
@@ -106,10 +130,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(this.SignUp.passwordSelector, this.SignUp.password);
@@ -154,10 +179,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(this.SignUp.passwordSelector, this.SignUp.password);
@@ -191,10 +217,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(this.SignUp.passwordSelector, this.SignUp.password);
@@ -248,10 +275,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(this.SignUp.passwordSelector, this.SignUp.fullPassword);
@@ -288,10 +316,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(
@@ -326,10 +355,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(
@@ -364,10 +394,11 @@ describe("Navigates to Sign Up", function() {
         this.SignUp.numberFormat
       );
 
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(
@@ -398,10 +429,11 @@ describe("Navigates to Sign Up", function() {
       register.getField(this.SignUp.firstNameSelector, this.SignUp.firstName);
 
       register.getField(this.SignUp.lastNameSelector, this.SignUp.lastName);
-      register.getRandomEmail(
+      register.getEmail(
         this.SignUp.emailSelector,
-        this.SignUp.gmailFormat,
-        this.SignUp.letterFormat
+        this.SignUp.numberFormat,
+        this.SignUp.email,
+        this.SignUp.gmailFormat
       );
 
       register.getField(this.SignUp.passwordSelector, this.SignUp.password);

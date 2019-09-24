@@ -12,6 +12,16 @@ class SignUp {
 
     return text;
   }
+  getEmail(selector, numberFormat, email, gmailFormat) {
+    var text = "0";
+    var possible = numberFormat;
+    for (var i = 0; i < 9; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    email += text;
+    cy.get(selector)
+      .type(email)
+      .type(gmailFormat);
+  }
   getRandomNumber(selector, numberFormat) {
     var text = "0";
     var possible = numberFormat;
